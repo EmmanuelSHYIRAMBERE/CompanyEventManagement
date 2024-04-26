@@ -1,6 +1,6 @@
-import { Event } from "../models/event.model";
-import { eventValidationSchema } from "../models/event.model";
+import { Event, eventValidationSchema } from "../models/event.model";
 import { catchAsyncError } from "../utility/catchSync";
+import cloudinary from "../utility/cloudinary";
 import errorHandler from "../utility/errorHandler";
 
 // Create a new event
@@ -14,15 +14,39 @@ export const createEvent = catchAsyncError(async (req, res, next) => {
     return next(new errorHandler(errorMessage, 400));
   }
 
-  const newEvent = new Event(req.body);
-  await newEvent.save();
+  const { title, location, date, seatNumber, price, category, description } =
+    req.body;
 
-  res.status(201).json(newEvent);
+  let image = "";
+
+  if (req.file) {
+    const eventPicture = await cloudinary.uploader.upload(req.file.path);
+    image = eventPicture.secure_url;
+  }
+
+  req.body.availableTicket = seatNumber;
+
+  const newEvent = await Event.create({
+    title,
+    location,
+    date,
+    availableTicket: req.body.availableTicket,
+    seatNumber,
+    price,
+    category,
+    description,
+    image,
+  });
+
+  res.status(201).json({ message: "success", event: newEvent });
 });
 
 // Get all events
 export const getAllEvents = catchAsyncError(async (req, res, next) => {
   const events = await Event.find();
+
+  console.log("events", events);
+
   res.status(200).json(events);
 });
 

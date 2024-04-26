@@ -6,4 +6,4 @@ export * from "./errorHandler";
 export * from "./catchSync";
 export * from "./passport-setup";
 export * from "./generateRandomPassword";
-export * from "./validateParkingAccessForDate";
+export * from "./validateDate";

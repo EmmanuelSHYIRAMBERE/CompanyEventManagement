@@ -1,4 +1,4 @@
-export function validateParkingAccessForDate(userDate, startHour, endHour) {
+export function validateDate(userDate, startHour, endHour) {
   const accessDate = Date.parse(userDate + "T" + startHour);
   const endDate = Date.parse(userDate + "T" + endHour);
 

@@ -7,6 +7,7 @@ import swaggerUI from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 
 import morgan from "morgan";
+import systemRouter from "./routes";
 
 const app = express();
 const port = process.env.PORT;
@@ -37,7 +38,7 @@ app.use(cors());
 app.use(morgan("dev"));
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-// app.use("/api", systemRouter);
+app.use("/api", systemRouter);
 app.use("/uploads", express.static("event_images"));
 
 mongoose

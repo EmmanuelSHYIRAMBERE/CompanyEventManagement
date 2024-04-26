@@ -2,7 +2,7 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "tour_images");
+    cb(null, "event_images");
   },
 
   filename: (req, file, cb) => {
@@ -21,9 +21,6 @@ const upload = multer({
   },
 });
 
-const tourImagesUpload = upload.fields([
-  { name: "backDropImage", maxCount: 1 },
-  { name: "gallery", maxCount: 15 },
-]);
+const EventImagesUpload = upload.single("image");
 
-export default tourImagesUpload;
+export default EventImagesUpload;

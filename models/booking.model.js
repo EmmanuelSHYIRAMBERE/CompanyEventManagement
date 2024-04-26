@@ -2,9 +2,8 @@ import mongoose from "mongoose";
 import Joi from "joi";
 
 export const bookingValidationSchema = Joi.object({
-  event_id: Joi.string().required(),
   ticketsBooked: Joi.number().integer().min(1).required(),
-  
+  userNumber: Joi.string().min(9).required(),
 });
 
 const bookingSchema = mongoose.Schema(
@@ -20,6 +19,18 @@ const bookingSchema = mongoose.Schema(
     ticketsBooked: {
       type: Number,
       required: true,
+    },
+    userNumber: {
+      type: String,
+      required: true,
+    },
+    totalPrice: {
+      type: Number,
+      required: true,
+    },
+    payment_id: {
+      type: String,
+      required: false,
     },
     status: {
       type: String,

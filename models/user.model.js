@@ -8,6 +8,7 @@ export const usersValidationSchema = Joi.object({
   phoneNo: Joi.string().required(),
   location: Joi.string().required(),
   password: Joi.string().min(6).required(),
+  role: Joi.string().valid("user", "admin"),
 });
 
 const userSchema = mongoose.Schema(

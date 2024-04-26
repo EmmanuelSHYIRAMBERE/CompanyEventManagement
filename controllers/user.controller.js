@@ -2,6 +2,7 @@ import { User } from "../models/user.model";
 import { usersValidationSchema } from "../models/user.model";
 import { catchAsyncError } from "../utility/catchSync";
 import errorHandler from "../utility/errorHandler";
+import { hashPassword } from "../utility/pwdEncryption";
 
 // Create a new user
 export const createUser = catchAsyncError(async (req, res, next) => {
@@ -14,10 +15,13 @@ export const createUser = catchAsyncError(async (req, res, next) => {
     return next(new errorHandler(errorMessage, 400));
   }
 
+  let hashedPwd = await hashPassword(req.body.password);
+  req.body.password = hashedPwd;
+
   const newUser = new User(req.body);
   await newUser.save();
 
-  res.status(201).json(newUser);
+  res.status(201).json({ message: "success", user: newUser });
 });
 
 // Get all users

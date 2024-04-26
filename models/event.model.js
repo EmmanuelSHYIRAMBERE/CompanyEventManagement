@@ -5,13 +5,11 @@ export const eventValidationSchema = Joi.object({
   title: Joi.string().required(),
   location: Joi.string().required(),
   date: Joi.date().required(),
-  ticketAvailability: Joi.number().integer().min(0).required(),
-  image: Joi.string().required(),
+  image: Joi.string().optional(),
   seatNumber: Joi.number().integer().min(1).required(),
   price: Joi.number().positive().required(),
   category: Joi.string().required(),
   description: Joi.string().required(),
-  isAvailable: Joi.boolean().default(true),
 });
 
 const eventSchema = mongoose.Schema(
@@ -28,13 +26,13 @@ const eventSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
-    ticketAvailability: {
+    availableTicket: {
       type: Number,
       required: true,
     },
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     seatNumber: {
       type: Number,
@@ -46,7 +44,7 @@ const eventSchema = mongoose.Schema(
     },
     category: {
       type: String,
-      unique: true,
+      unique: false,
     },
     description: {
       type: String,
@@ -60,10 +58,6 @@ const eventSchema = mongoose.Schema(
       type: String,
       enum: ["pending", "started", "ended", "cancelled"],
       default: "pending",
-    },
-    user_id: {
-      type: String,
-      required: true,
     },
   },
   { timestamps: true }
