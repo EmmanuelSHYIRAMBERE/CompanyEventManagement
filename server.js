@@ -25,6 +25,9 @@ const options = {
       {
         url: "http://localhost:7000",
       },
+      {
+        url: "https://companyeventmanagement.onrender.com",
+      },
     ],
   },
   apis: ["./routes/*.js"],
