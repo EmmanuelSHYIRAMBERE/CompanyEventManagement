@@ -26,7 +26,7 @@ const options = {
         url: "http://localhost:7000",
       },
       {
-        url: "https://companyeventmanagement.onrender.com",
+        url: "https://etitetecheventmanagementplatformbackend.onrender.com",
       },
     ],
   },
