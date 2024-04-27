@@ -123,6 +123,8 @@ export const getBookingById = catchAsyncError(async (req, res, next) => {
 export const updateBookingById = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const booking = await Booking.findById({ _id: id });
+
+  console.log(booking);
   if (!booking) {
     return next(new errorHandler("Booking not found", 404));
   }
