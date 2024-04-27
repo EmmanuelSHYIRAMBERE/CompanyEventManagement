@@ -81,6 +81,7 @@ export const getAllBookings = catchAsyncError(async (req, res, next) => {
     const event = await Event.findById(booking.event_id);
 
     const bookingData = {
+      _id: booking._id,
       ticketsBooked: booking.ticketsBooked,
       userNumber: booking.userNumber,
       totalPrice: booking.totalPrice,
