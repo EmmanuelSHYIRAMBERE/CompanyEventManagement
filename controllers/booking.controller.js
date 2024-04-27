@@ -74,7 +74,28 @@ export const bookEvent = catchAsyncError(async (req, res, next) => {
 // Get all bookings
 export const getAllBookings = catchAsyncError(async (req, res, next) => {
   const bookings = await Booking.find();
-  res.status(200).json(bookings);
+  const filteredBookings = [];
+
+  for (const booking of bookings) {
+    const user = await User.findById(booking.user_id);
+    const event = await Event.findById(booking.event_id);
+
+    const bookingData = {
+      ticketsBooked: booking.ticketsBooked,
+      userNumber: booking.userNumber,
+      totalPrice: booking.totalPrice,
+      payment_id: booking.payment_id,
+      status: booking.status,
+      userName: user.fullNames,
+      eventName: event.title,
+      eventLocation: event.location,
+      date: event.date,
+    };
+
+    filteredBookings.push(bookingData);
+  }
+
+  res.status(200).json(filteredBookings);
 });
 
 // Get booking by ID
@@ -100,26 +121,20 @@ export const getBookingById = catchAsyncError(async (req, res, next) => {
 // Update booking by ID
 export const updateBookingById = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-
-  const { error } = bookingValidationSchema.validate(req.body, {
-    abortEarly: false,
-  });
-
-  if (error) {
-    const errorMessage = error.details.map((err) => err.message).join(", ");
-    return next(new errorHandler(errorMessage, 400));
-  }
-
-  const updatedBooking = await Booking.findByIdAndUpdate(id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!updatedBooking) {
+  const booking = await Booking.findById({ _id: id });
+  if (!booking) {
     return next(new errorHandler("Booking not found", 404));
   }
 
-  res.status(200).json(updatedBooking);
+  booking.status = "cancelled";
+  await booking.save();
+
+  const event = await Event.findById({ _id: booking.event_id });
+
+  event.availableTicket = event.availableTicket + booking.ticketsBooked;
+  await event.save();
+
+  res.status(200).json({ message: "Booking cancelled successfully" });
 });
 
 // Delete booking by ID
@@ -130,4 +145,23 @@ export const deleteBookingById = catchAsyncError(async (req, res, next) => {
     return next(new errorHandler("Booking not found", 404));
   }
   res.status(200).json({ message: "Booking deleted successfully" });
+});
+
+// Delete booking by ID
+export const cancelBookingById = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  const booking = await Booking.findById({ _id: id });
+  if (!booking) {
+    return next(new errorHandler("Booking not found", 404));
+  }
+
+  booking.status = "cancelled";
+  await booking.save();
+
+  const event = await Event.findById({ _id: booking.event_id });
+
+  event.availableTicket = event.availableTicket + booking.ticketsBooked;
+  await event.save();
+
+  res.status(200).json({ message: "Booking cancelled successfully" });
 });
