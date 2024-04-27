@@ -16,10 +16,10 @@ const options = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "Event-Management-Platform API Documentation",
+      title: "EtiTetech-Event-Management-Platform API Documentation",
       version: "1.0.0",
       description:
-        "This Event-Management-Platform API Documentation is designed to provide basics of how this API functions.",
+        "This EtiTetech-Event-Management-Platform API Documentation is designed to provide basics of how this API functions.",
     },
     servers: [
       {
@@ -50,7 +50,7 @@ mongoose
     console.log(`connected to mongo DB`);
     app.listen(port, () =>
       console.log(
-        `Event-Management-Platform is running on port http://localhost:${port}`
+        `EtiTetech Event-Management-Platform is running on port http://localhost:${port}`
       )
     );
   })

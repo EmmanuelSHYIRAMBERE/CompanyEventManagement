@@ -1,7 +1,7 @@
 {
-  "name": "event-management-project",
+  "name": "etitetech-event-management-platform",
   "version": "1.0.0",
-  "description": "This event-management-project API is designed to provide basics of how this system functions.",
+  "description": "This EtiTetech-event-management-project API is designed to provide basics of how this system functions.",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon --exec babel-node server.js",

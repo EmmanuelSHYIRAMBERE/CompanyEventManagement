@@ -84,7 +84,17 @@ export const getBookingById = catchAsyncError(async (req, res, next) => {
   if (!booking) {
     return next(new errorHandler("Booking not found", 404));
   }
-  res.status(200).json(booking);
+
+  const user = await User.findById({ _id: booking.user_id });
+  const event = await Event.findById({ _id: booking.event_id });
+
+  res.status(200).json({
+    booking,
+    userName: user.fullNames,
+    eventName: event.title,
+    eventLocation: event.location,
+    date: event.date,
+  });
 });
 
 // Update booking by ID
